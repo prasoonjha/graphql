@@ -16,6 +16,14 @@ const User = new GraphQLObjectType({
     age: { type: GraphQLInt },
   },
 });
+
+const Company = new GraphQLObjectType({
+  name: "Company",
+  fields: {
+    id: { type: GraphQLString },
+    name: { type: GraphQLString },
+  },
+});
 const dbUrl = "http://localhost:3000";
 const RootQuery = new GraphQLObjectType({
   name: "Root",
@@ -25,6 +33,15 @@ const RootQuery = new GraphQLObjectType({
       args: { id: { type: GraphQLString } },
       resolve(parent, args) {
         return axios.get(dbUrl + `/users/${args.id}`).then((res) => res.data);
+      },
+    },
+    company: {
+      type: Company,
+      args: { id: { type: GraphQLString } },
+      resolve(parent, args) {
+        return axios
+          .get(dbUrl + `/companies/${args.id}`)
+          .then((res) => res.data);
       },
     },
   },
